@@ -1,5 +1,8 @@
 import styled from '@emotion/styled'
 import Link from 'next/link'
+import {
+    Card as Cards
+} from '../template/style'
 
 export default function Card(props) {
 
@@ -8,16 +11,11 @@ export default function Card(props) {
         title,
         season,
         episode,
-        id
+        id,
+        ...attr
     } = props;
 
-    const Card = styled.div`
-        flex-direction: column;
-        margin: 1vh 1vw;
-        width: fit-content;
-        height: 55vh;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
-    `;
+    const Card = Cards;
 
     const Image = styled.img`
         object-fit: cover;
@@ -44,6 +42,7 @@ export default function Card(props) {
                     <p>Season : {season}</p>
                     <p>Episodes : {episode} </p>
                 </div>
+                {attr.removeButton}
             </Card>
         </Link>
     )

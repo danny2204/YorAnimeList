@@ -4,6 +4,9 @@ import { gql, useQuery } from '@apollo/client'
 import styled from '@emotion/styled'
 import Tabs from '../../components/tabs';
 import React, { useEffect } from 'react';
+import {
+    Container as ContainerTemplate
+} from '../../components/template/style'
 
 export default function Details() {
     const router = useRouter();
@@ -32,6 +35,7 @@ export default function Details() {
                 }
                 coverImage {
                     large
+                    medium
                 }
                 genres
                 episodes
@@ -40,6 +44,7 @@ export default function Details() {
                 characters {
                     edges {
                         node {
+                            id
                             name {
                                 full
                             }
@@ -53,6 +58,7 @@ export default function Details() {
                 staff {
                     edges {
                         node {
+                            id
                             name {
                                 full
                             }
@@ -74,6 +80,7 @@ export default function Details() {
                 reviews {
                     edges {
                         node {
+                            id
                             summary
                             userRating
                             user {
@@ -98,10 +105,7 @@ export default function Details() {
         height: 28vw;
     `;
 
-    const Container = styled.div`
-        display: flex;
-        flex-direction: column;
-    `;
+    const Container = ContainerTemplate;
 
     var startDate = new Date(data?.Media.startDate.year, data?.Media.startDate.month, data?.Media.startDate.day);
     startDate = startDate.toLocaleString('default', {
@@ -139,14 +143,30 @@ export default function Details() {
         setCurrentTab(x)
     }
 
-    function addToCollection(data) {
-        // window.localStorage.clear()
-        if (localStorage.length == 0){
-            const newCollection = window.prompt("Input New Collection Name");
-            var test = Object.assign({collections: [newCollection]}, data)
-            localStorage.setItem(newCollection, JSON.stringify([test]));
+    function addAnime(collection, data) {
+        if (!localStorage.getItem(data.Media.id)) {
+            var anime = Object.assign({collections: [collection]}, data)
+            localStorage.setItem(data.Media.id, JSON.stringify(anime));
         } else {
-            console.log(Object.entries(localStorage))
+            var animeCollections = JSON.parse(localStorage.getItem(data.Media.id));
+            animeCollections.collections.push(collection);
+            localStorage.setItem(data.Media.id, JSON.stringify(animeCollections));
+        }
+    }
+
+    function addToCollection(data) {
+        var collection = "";
+        window.localStorage.clear();
+        if (localStorage.length == 0){
+            collection = window.prompt("Input New Collection Name");
+            localStorage.setItem(collection, JSON.stringify([data]));
+            addAnime(collection, data);
+        } else {
+        //     // console.log(JSON.parse(localStorage.getItem(data.Media.id)));
+            var test = JSON.parse(localStorage.getItem(collection));
+            test.push(data);
+            localStorage.setItem(collection, JSON.stringify(test));
+            addAnime(collection, data);
         }
     }
 
@@ -163,10 +183,10 @@ export default function Details() {
                         <p>{data?.Media.episodes}</p>
                         <p>{startDate} - {endDate}</p>
                         {data?.Media.studios.edges.map(function(s) {
-                            return s.node.name
+                            return <p key={s.node.id}>{s.node.name}</p>
                         })}
                         {data?.Media.genres.map(function(g) {
-                            return g
+                            return <p>{g}</p>
                         })}
                     </div>
                 </Container>

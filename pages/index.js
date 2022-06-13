@@ -6,6 +6,7 @@ import Card from '../components/card/index'
 import React, { useEffect } from 'react'
 import Pagination from '../components/pagination'
 import { gql, useLazyQuery } from '@apollo/client'
+import Layout from '../components/template/layout'
 
 export default function Home() {
   const [pages, setPage] = React.useState(1);
@@ -45,16 +46,7 @@ export default function Home() {
 
   useEffect(() => {
     getData()
-    if (loading) {
-      return "Loading . . ."
-    }
   }, [pages]);
-
-  const Container = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  `;
 
   function previous() {
     setPage(pages - 1);
@@ -69,18 +61,10 @@ export default function Home() {
   }
   
   return (
-    <div>
+    <>
       <Navbar />
-      <Container>
-          {data == null ? "" : data.Page.media.map(function(d, idx) {
-            return (<Card key={idx}
-              season={d.seasonInt} episode={d.episodes}
-              title={d.title.romaji} image={d.coverImage.large}
-              id={d.id}>{d.title.romaji}</Card>)
-          })}
-      </Container>
-
+        <Layout isPage={true} data={data} />
       <Pagination currentPage={pages} previous={() => previous()} goTo={goTo} next={() => next()} />
-    </div>
+    </>
   )
 }
