@@ -1,12 +1,10 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styled from '@emotion/styled'
 import Navbar from '../components/navbar/index'
-import Card from '../components/card/index'
 import React, { useEffect } from 'react'
 import Pagination from '../components/pagination'
 import { gql, useLazyQuery } from '@apollo/client'
 import Layout from '../components/template/layout'
+import { css } from '@emotion/react'
+import { Container } from '../components/template/style'
 
 export default function Home() {
   const [pages, setPage] = React.useState(1);
@@ -61,10 +59,14 @@ export default function Home() {
   }
   
   return (
-    <>
+    <div>
       <Navbar />
+      <Container css={css`
+        align-items: center
+      `}>
         <Layout isPage={true} data={data} />
-      <Pagination currentPage={pages} previous={() => previous()} goTo={goTo} next={() => next()} />
-    </>
+        <Pagination pages={data?.Page.pageInfo.lastPage} currentPage={pages} previous={() => previous()} goTo={goTo} next={() => next()} />
+      </Container>
+    </div>
   )
 }

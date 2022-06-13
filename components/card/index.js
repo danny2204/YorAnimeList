@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
+import {css} from '@emotion/react'
 import Link from 'next/link'
 import {
-    Card as Cards
+    Card as Cards, CardBody
 } from '../template/style'
 
 export default function Card(props) {
@@ -38,10 +39,10 @@ export default function Card(props) {
             <Card>
                 <Image src={image} />
                 <Title>{title}</Title>
-                <div style={{display: "flex", justifyContent: "space-between", alignItems: "flex-end"}}>
+                <CardBody>
                     <p>Season : {season}</p>
                     <p>Episodes : {episode} </p>
-                </div>
+                </CardBody>
                 {attr.removeButton}
             </Card>
         </Link>

@@ -1,7 +1,7 @@
 // import { navbar, navbar_items} from './style'
 import Link from 'next/link'
 import React from 'react'
-import { Nav, NavBar, NavItem } from '../template/style'
+import {Nav, NavBar, NavItem} from '../template/style'
 
 export default function Navbar() {
     return (

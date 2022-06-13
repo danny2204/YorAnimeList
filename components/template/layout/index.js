@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
-import Card from "../../card";
+import 
+    Card
+from "../../card";
 
 export default function Layout(props) {
     const {
@@ -8,14 +10,14 @@ export default function Layout(props) {
         action
     } = props;
     
-    const Container = styled.div`
+    const Containers = styled.div`
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
     `;
 
     return(
-        <Container>
+        <Containers>
             {isPage == true && data != null ? data?.Page.media.map(function(d, idx) {
                 return (<Card key={idx}
                   season={d.seasonInt} episode={d.episodes}
@@ -33,6 +35,6 @@ export default function Layout(props) {
                       {d.Media.title.romaji}
                   </Card>)
               })}
-        </Container>
+        </Containers>
     )
 }

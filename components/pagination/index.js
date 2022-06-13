@@ -1,3 +1,11 @@
+import {
+    PrevButton,
+    NextButton,
+    CurrentPageButton,
+    PageButton,
+    DotsPageButton
+} from "../template/style"
+
 export default function Pagination(props) {
     const {
         currentPage,
@@ -10,37 +18,48 @@ export default function Pagination(props) {
     var buttons = [];
     
     buttons.push(
-        <button key={-1} onClick={previous}> {String.fromCharCode(243)} </button>
+        <PrevButton key={-1} onClick={previous}> {String.fromCharCode(171)} </PrevButton>
     )
     
-    if (currentPage > 2) {
+    if (currentPage-1 > 2) {
         buttons.push(
-            <button key={1} onClick={() => goTo(1)}>1</button>
-        )
+            <PageButton key={1} onClick={() => goTo(1)}>1</PageButton>
+        );
+        if (currentPage >= 4) {
+            buttons.push(
+                <DotsPageButton key={-3}>...</DotsPageButton>
+            );
+        }
     }
 
     if (currentPage - 1 > 0) {
         buttons.push(
-            <button key={currentPage-1} onClick={() => goTo(currentPage-1)}> {currentPage-1} </button>
+            <PageButton key={currentPage-1} onClick={() => goTo(currentPage-1)}> {currentPage-1} </PageButton>
         )
         buttons.push(
-            <button key={currentPage} onClick={() => goTo(currentPage)}> {currentPage} </button>
+            <CurrentPageButton key={currentPage} onClick={() => goTo(currentPage)}> {currentPage} </CurrentPageButton>
         )
         buttons.push(
-            <button key={currentPage+1} onClick={() => goTo(currentPage+1)}> {currentPage+1} </button>
+            <PageButton key={currentPage+1} onClick={() => goTo(currentPage+1)}> {currentPage+1} </PageButton>
         )
     } else {
         buttons.push(
-            <button key={currentPage} onClick={() => goTo(currentPage)}> {currentPage} </button>
+            <CurrentPageButton key={currentPage} onClick={() => goTo(currentPage)}> {currentPage} </CurrentPageButton>
         )
         buttons.push(
-            <button key={currentPage+1} onClick={() => goTo(currentPage+1)}> {currentPage+1} </button>
+            <PageButton key={currentPage+1} onClick={() => goTo(currentPage+1)}> {currentPage+1} </PageButton>
         )
     }
 
+    if (currentPage+1 < pages) {
+        buttons.push([
+            <DotsPageButton key={-3}>...</DotsPageButton>,
+            <PageButton key={pages} onClick={() => goTo(pages)}> {pages} </PageButton>,
+        ]);        
+    }
     buttons.push(
-        <button key={-2} onClick={next}> {String.fromCharCode(244)} </button>
-    )
+        <NextButton key={-2} onClick={next}> {String.fromCharCode(187)} </NextButton>
+    );
 
     return(
         <div>

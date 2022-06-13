@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import {useRouter} from 'next/router'
 import Navbar from '../../components/navbar';
 import { gql, useQuery } from '@apollo/client'
@@ -5,8 +6,15 @@ import styled from '@emotion/styled'
 import Tabs from '../../components/tabs';
 import React, { useEffect } from 'react';
 import {
-    Container as ContainerTemplate
-} from '../../components/template/style'
+    AddButton,
+    Container as ContainerTemplate,
+    Information,
+    Label,
+    ListItem,
+    SmallLabel
+} from '../../components/template/style';
+import {css} from '@emotion/react';
+import SmallInformation from '../../components/template/SmallInformation';
 
 export default function Details() {
     const router = useRouter();
@@ -37,7 +45,10 @@ export default function Details() {
                     large
                     medium
                 }
+                type
                 genres
+                season
+                seasonYear
                 episodes
                 averageScore
                 trending
@@ -122,11 +133,40 @@ export default function Details() {
     });
 
     var characterTab = data?.Media.characters.edges.map(function(c) {
-        return (<p>{c.node.name.full}</p>)
+        return (
+            <ListItem>
+                <img css={css`
+                    width: 3.5rem;
+                    height: 5rem;
+                    border: 1px solid black;
+                `} src={c.node.image.medium} />
+                <p css={css`
+                    margin-left: 0.75rem;
+                `}>
+                    {c.node.name.full}
+                </p>
+            </ListItem>
+        )
     });
 
-    var staffTab = data?.Media.staff.edges.map(function(s) {
-        return (<p>{s.node.name.full}</p>)
+    var staffTab = data?.Media.reviews.edges.map(function(r) {
+        return (
+            <ListItem css={css`
+                flex-direction: column;
+                align-items: flex-start;
+            `}>
+                <p css={css`
+                    margin-left: 0.75rem;
+                `}>
+                    <b>{r.node.user.name}</b>
+                </p>
+                <p css={css`
+                    margin-left: 0.75rem;
+                `}>
+                    {r.node.summary}
+                </p>
+            </ListItem>
+        )
     });
 
     const [children, setChildren] = React.useState(characterTab);
@@ -156,13 +196,12 @@ export default function Details() {
 
     function addToCollection(data) {
         var collection = "";
-        window.localStorage.clear();
+        // window.localStorage.clear();
         if (localStorage.length == 0){
             collection = window.prompt("Input New Collection Name");
             localStorage.setItem(collection, JSON.stringify([data]));
             addAnime(collection, data);
         } else {
-        //     // console.log(JSON.parse(localStorage.getItem(data.Media.id)));
             var test = JSON.parse(localStorage.getItem(collection));
             test.push(data);
             localStorage.setItem(collection, JSON.stringify(test));
@@ -171,34 +210,77 @@ export default function Details() {
     }
 
     return (
-        <div>
+        <Container>
             <Navbar />
-            <div style={{display: "flex"}}>
+            <div style={{
+                display: "flex",
+                padding: "3rem"
+            }}>
                 <Container>
-                    <Image src={data?.Media.coverImage.large} />
-                    <button onClick={() => addToCollection(data)}>Add To Collection</button>
+                    <Image css={css`
+                        width: 20rem;
+                        height: 25rem;
+                    `} src={data?.Media.coverImage.large} />
+                    <AddButton onClick={() => addToCollection(data)}>+ Add To Collection</AddButton>
                     <div>
-                        <p>{data?.Media.title.native}</p>
-                        <p>{data?.Media.title.english}</p>
-                        <p>{data?.Media.episodes}</p>
-                        <p>{startDate} - {endDate}</p>
-                        {data?.Media.studios.edges.map(function(s) {
-                            return <p key={s.node.id}>{s.node.name}</p>
-                        })}
-                        {data?.Media.genres.map(function(g) {
-                            return <p>{g}</p>
-                        })}
+                        <Information><b>Informations</b></Information>
+                        <hr></hr>
+                        <Information> <b>Japanese : </b> {data?.Media.title.native}</Information>
+                        <Information> <b>English : </b> {data?.Media.title.english}</Information>
+                        <Information> <b>Aired : </b> {startDate} - {endDate}</Information>
+                        <Information>
+                            <b>Studios : </b>
+                                {data?.Media.studios.edges.map(function(s) {
+                                    return s.node.name + ", "
+                                })}
+                        </Information>
                     </div>
                 </Container>
-                <Container>
-                    <div style={{dispaly: "flex", flexDirection: "column"}}>
-                        <h1> {data?.Media.title.romaji} </h1>
-                        <div>
-                            <h5> Episodes: {data?.Media.episodes} </h5>
-                            <h5> Score: {data?.Media.averageScore} </h5>
-                            <h5> Trending: {data?.Media.trending} </h5>
+                <Container css={css`
+                    margin-left: 2rem;
+                `}>
+                    <div css={css`
+                        dispaly: flex;
+                        flexDirection: column;
+                        margin-bottom: 1rem;
+                    `}>
+                        <h1 css={css`
+                            font-size: 2rem;
+                        `}> {data?.Media.title.romaji} </h1>
+                        <div css={css`
+                            display: flex;
+                            flex-wrap: wrap;
+                        `}>
+                            {data?.Media.genres.map(function(g) {
+                                return <Label>{g}</Label>
+                            })}
                         </div>
-                        <h5>Synopsis : </h5>
+
+                        <div css={css`
+                            display: flex;
+                            flex-wrap: wrap;
+                            align-items: center;
+                            background-color: #e5e7eb;
+                            padding: 1rem 0;
+                            margin: 1rem 0;
+                        `}>
+                            <SmallInformation label={"Score"} content={data?.Media.averageScore} threshold={"/100"} />
+                            <div css={css`
+                                height: 5rem;
+                                border-left: 1px solid black;
+                            `} />
+                            <SmallInformation label={"Trending"} content={data?.Media.trending} />
+                            <SmallInformation label={"Episodes"} content={data?.Media.episodes} />
+                            <SmallInformation label={"Season"} content={data?.Media.season} />
+                            <SmallInformation label={"Year"} content={data?.Media.seasonYear} />
+                            <SmallInformation label={"Type"} content={data?.Media.type} />
+                        </div>
+                        <h1 css={css`
+                            font-size: 1.5rem;
+                        `}>Synopsis : </h1>
+                        <hr css={css`
+                            margin: 0.5rem 0;
+                        `}/>
                         <p>
                             {data?.Media.description}
                         </p>
@@ -209,6 +291,6 @@ export default function Details() {
                     </Tabs>
                 </Container>
             </div>
-        </div>
+        </Container>
     )
 }
