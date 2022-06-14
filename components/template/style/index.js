@@ -38,21 +38,30 @@ export const Card = styled.div`
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     border-top-width: 0px;
     border-bottom-width: 1px;
+    border: 1px solid rgb(209 213 219);
     margin: 1rem 1rem;
+    padding-bottom: 1rem;
+    width: 17vw;
+    height: 65vh;
+
+    &:hover {
+        border: 1px solid rgb(156 163 175);
+        cursor: pointer;
+    }
 `;
 
 export const CardBody = styled.div`
     display: flex;
+    width: 100%;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 1rem;
 `;
 
 export const PrevButton = styled.button`
     position: relative;
     display: inline-flex;
     align-items: center;
-    padding: 0.75rem 0.75rem;
+    padding: 0.3rem 0.75rem;
     border-top-left-radius: 0.75rem;
     border-bottom-left-radius: 0.75rem;
     border-width: 0.1rem;
@@ -68,7 +77,7 @@ export const NextButton = styled.button`
     position: relative;
     display: inline-flex;
     align-items: center;
-    padding: 0.75rem 0.75rem;
+    padding: 0.3rem 0.75rem;
     border-top-right-radius: 0.75rem;
     border-bottom-right-radius: 0.75rem;
     border-width: 0.1rem;
@@ -88,7 +97,7 @@ export const CurrentPageButton = styled.button`
     position: relative;
     display: inline-flex;
     align-items: center;
-    padding: 0.75rem 0.75rem;
+    padding: 0.3rem 0.75rem;
 `;
 
 export const PageButton = styled.button`
@@ -97,7 +106,7 @@ export const PageButton = styled.button`
     position: relative;
     display: inline-flex;
     align-items: center;
-    padding: 0.75rem 0.75rem;
+    padding: 0.3rem 0.75rem;
     border-width: 0.1rem;
 
     &:hover {
@@ -118,16 +127,35 @@ export const DotsPageButton = styled.span`
 export const AddButton = styled.button`
     display: inline-flex;
     justify-content: center;
+    align-items: center;
     padding: 0.5rem 1rem;
-    border-width: 0.1rem;
+    border-width: 0;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     border-radius: 0.25rem;
     color: white;
-    background-color: #4f46e5;
+    background-color: rgb(66, 120, 245);
     margin: 0.2rem 0;
 
     &:hover {
         background-color: #4338ca;
+        cursor: pointer;
+    }
+`;
+
+export const CancelButton = styled.button`
+    display: inline-flex;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-width: 0;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    border-radius: 0.25rem;
+    color: white;
+    background-color: rgb(189, 28, 28);
+    margin: 0.2rem 0;
+
+    &:hover {
+        background-color: rgba(189, 28, 28, 0.75);
+        cursor: pointer;
     }
 `;
 
@@ -197,4 +225,79 @@ export const ListItem = styled.li`
     display: flex;
     border-bottom: 1px solid rgb(209 213 219);
     align-items: center;
+`;
+
+export const ModalContainer = styled.div`
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+`;
+
+export const Modal = styled.div`
+    background-color: white;
+    border-radius: 0.25rem;
+    padding: 1.5rem;
+    width: 25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+`;
+
+export const Input = styled.input`
+    display: block;
+    width: 100%;
+    border: 1px solid rgb(209 213 219);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    margin: 0.75rem 0;
+`;
+
+export const CollectionContainer = styled.div`
+    position: relative;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    border: 1px solid rgb(209 213 219);
+    background-color: white;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 0.1rem 0.2rem 0 rgb(0 0 0 / 0.05);
+    display: flex;
+    align-items: center;
+    width: 30rem;
+    height: 7rem;
+
+    &:hover {
+        border: 1px solid rgb(156 163 175);
+        cursor: pointer;
+    }
+`;
+
+export const PageTitle = styled.h1`
+    font-size: 2rem;
+    padding: 1.5rem 3rem;
+`;
+
+export const DeleteButton = styled.button`
+    display: inline-flex;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-width: 0;
+    width: 100%;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    color: white;
+    background-color: rgb(189, 28, 28);
+
+    &:hover {
+        background-color: rgba(189, 28, 28, 0.75);
+        cursor: pointer;
+    }
 `;

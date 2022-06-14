@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled'
 import {css} from '@emotion/react'
 import Link from 'next/link'
@@ -20,8 +21,8 @@ export default function Card(props) {
 
     const Image = styled.img`
         object-fit: cover;
-        width: 15vw;
-        height: 20vw;
+        width: 100%;
+        height: 50vh;
     `;
 
     const Title = styled.h5`
@@ -36,13 +37,19 @@ export default function Card(props) {
             pathname: '/details/[id]',
             query: {id: id}
         }}>
-            <Card>
+            <Card css={css`
+                ${attr.style}
+            `}>
                 <Image src={image} />
-                <Title>{title}</Title>
-                <CardBody>
-                    <p>Season : {season}</p>
-                    <p>Episodes : {episode} </p>
-                </CardBody>
+                <div css={css`
+                    padding: 0 1.5rem;
+                `}>
+                    <Title>{title}</Title>
+                    <CardBody>
+                        <p>Season : {season}</p>
+                        <p>Episodes : {episode} </p>
+                    </CardBody>
+                </div>
                 {attr.removeButton}
             </Card>
         </Link>

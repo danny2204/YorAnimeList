@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import {
     PrevButton,
     NextButton,
@@ -5,6 +6,7 @@ import {
     PageButton,
     DotsPageButton
 } from "../template/style"
+import {css} from "@emotion/react";
 
 export default function Pagination(props) {
     const {
@@ -62,7 +64,9 @@ export default function Pagination(props) {
     );
 
     return(
-        <div>
+        <div css={css`
+            margin: 0 0 1.5rem 1.5rem;
+        `}>
             {buttons.map(function(b) {
                 return(b);
             })}
