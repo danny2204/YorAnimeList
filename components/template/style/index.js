@@ -3,6 +3,68 @@ import styled from '@emotion/styled'
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
+
+    @media only screen and (max-width: 400px) {
+        flex-direction: column;
+        padding: 0.75rem;
+        align-items: center;
+        margin-left: 0;
+
+        #desktop-title {
+            display: none;
+        }
+
+        #mobile-title {
+            display: block;
+        }
+
+        #add-to-collection {
+            width: 98%;
+        }
+
+        #genre-container {
+            display: none;
+        }
+
+        .mobile-information {
+            display: block;
+        }
+
+        .desktop-information {
+            display: none;
+        }
+
+        #mobile-container {
+            flex-direction: column;
+        }
+
+        .collection-card {
+            width: 100%;
+        }
+
+        .divider {
+            display: none;
+        }
+
+        .delete-svg {
+            display: block;
+        }
+
+        .default-delete-label {
+            display: none;
+        }
+    }
+`;
+
+export const BurgerButton = styled.div`
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 1rem;
+
+    @media only screen and (max-width: 400px) {
+        display: flex;
+    }
 `;
 
 export const NavBar = styled.div`
@@ -13,6 +75,10 @@ export const NavBar = styled.div`
 export const Nav = styled.ul`
     display: flex;
     margin-left: 0.75rem;
+
+    @media only screen and (max-width: 400px) {
+        display: none;
+    }
 `;
 
 export const NavItem = styled.li`
@@ -41,12 +107,18 @@ export const Card = styled.div`
     border: 1px solid rgb(209 213 219);
     margin: 1rem 1rem;
     padding-bottom: 1rem;
-    width: 17vw;
+    width: 20rem;
     height: 65vh;
 
     &:hover {
         border: 1px solid rgb(156 163 175);
         cursor: pointer;
+    }
+
+    @media only screen and (max-width: 400px) {
+        width: 10rem;
+        height: 15rem;
+        margin: 1rem 0.25rem;
     }
 `;
 
@@ -55,6 +127,10 @@ export const CardBody = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: flex-end;
+
+    @media only screen and (max-width: 400px) {
+        display: none;
+    }
 `;
 
 export const PrevButton = styled.button`
@@ -98,6 +174,10 @@ export const CurrentPageButton = styled.button`
     display: inline-flex;
     align-items: center;
     padding: 0.3rem 0.75rem;
+
+    @media only screen and (max-width: 400px) {
+        display: none;
+    }
 `;
 
 export const PageButton = styled.button`
@@ -112,6 +192,10 @@ export const PageButton = styled.button`
     &:hover {
         background-color: rgb(249 250 251);
     }
+
+    @media only screen and (max-width: 400px) {
+        display: none;
+    }
 `;
 
 export const DotsPageButton = styled.span`
@@ -122,6 +206,10 @@ export const DotsPageButton = styled.span`
     border-width: 0.1rem;
     border-color: rgb(209 213 219);
     background-color: white;
+
+    @media only screen and (max-width: 400px) {
+        display: none;
+    }
 `;
 
 export const AddButton = styled.button`
@@ -249,6 +337,10 @@ export const Modal = styled.div`
     flex-direction: column;
     align-items: center;
     z-index: 2;
+
+    @media only screen and (max-width: 400px) {
+        width: 80%;
+    }
 `;
 
 export const Input = styled.input`
@@ -277,10 +369,14 @@ export const CollectionContainer = styled.div`
         border: 1px solid rgb(156 163 175);
         cursor: pointer;
     }
+
+    @media only screen and (max-width: 400px) {
+        width: 18rem;
+    }
 `;
 
 export const PageTitle = styled.h1`
-    font-size: 2rem;
+    font-size: 1.5rem;
     padding: 1.5rem 3rem;
 `;
 
@@ -300,4 +396,34 @@ export const DeleteButton = styled.button`
         background-color: rgba(189, 28, 28, 0.75);
         cursor: pointer;
     }
+`;
+
+export const Image = styled.img`
+    object-fit: cover;
+    width: 100%;
+    height: 50vh;
+
+    @media only screen and (max-width: 400px) {
+        height: 10rem;
+        width: 10rem;
+    }
+`;
+
+export const Title = styled.h5`
+    margin: 0;
+    text-align: center;
+    width: 17rem;
+    word-wrap: break-word;
+
+    @media only screen and (max-width: 400px) {
+        width: 100%;
+        font-size: 0.75rem;
+    }
+`;
+
+export const BurgerBar = styled.div`
+    width: 1.75rem;
+    height: 0.2rem;
+    background-color: white;
+    margin: 0.25rem 0;
 `;

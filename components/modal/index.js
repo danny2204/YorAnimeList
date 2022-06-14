@@ -9,6 +9,7 @@ import {
 } from "../template/style";
 import {css} from '@emotion/react';
 import React from "react";
+import Link from "next/link";
 
 export function AddModals(props) {
     const {
@@ -46,8 +47,8 @@ export function AddModals(props) {
                         <svg css={css`
                             height: 1rem;
                             margin: 0 0.25rem;
-                        `} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                         Cancel
                     </CancelButton>
@@ -55,8 +56,8 @@ export function AddModals(props) {
                         <svg css={css`
                             height: 1rem;
                             margin: 0 0.25rem;
-                            `} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         Add New Collection
                     </AddButton>
@@ -71,7 +72,9 @@ export function Modals(props) {
         data,
         display,
         onClose,
-        addToCollection
+        addToCollection,
+        buttonDisplay,
+        title
     } = props;
 
     function add() {
@@ -86,7 +89,7 @@ export function Modals(props) {
             display: ${display};
         `}>
             <Modal>
-                <h1>Add To Collection</h1>
+                <h1>{title}</h1>
                 <hr css={css`
                     width: 100%;
                     margin-top: 0.75rem;
@@ -98,7 +101,7 @@ export function Modals(props) {
                     overflow-y: auto;
                 `}>
                     {data?.length == 0 && <p>No Collections</p>}
-                    {data?.map((d) => {
+                    {buttonDisplay == "flex" && data?.map((d) => {
                         return <ListItem css={css`
                             padding-left: 2rem;
 
@@ -110,8 +113,27 @@ export function Modals(props) {
                             {d}
                         </ListItem>
                     })}
+
+                    {buttonDisplay == "none" && data?.map((d) => {
+                        return (
+                            <Link href={`/collections/${d}`}>
+                                <ListItem css={css`
+                                    padding-left: 2rem;
+
+                                    &:hover {
+                                        cursor: pointer;
+                                        background-color: rgb(229 231 235);
+                                    }
+                                `}>
+                                    {d}
+                                </ListItem>
+                            </Link>
+                        )
+                    })}
                 </ul>
-                <Input placeholder="Input Collection Name" onChange={(e) => setContent(e.target.value)} />
+                <Input css={css`
+                    display: ${buttonDisplay}
+                `} placeholder="Input Collection Name" onChange={(e) => setContent(e.target.value)} />
                 <div css={css`
                     display: flex;
                     width: 100%;
@@ -123,17 +145,19 @@ export function Modals(props) {
                         <svg css={css`
                             height: 1rem;
                             margin: 0 0.25rem;
-                        `} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                         Cancel
                     </CancelButton>
-                    <AddButton onClick={() => add()}>
+                    <AddButton css={css`
+                        display: ${buttonDisplay};
+                    `} onClick={() => add()}>
                         <svg css={css`
                             height: 1.25rem;
                             margin: 0 0.25rem;
-                            `} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         Add New Collection
                     </AddButton>

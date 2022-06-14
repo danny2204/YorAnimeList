@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import {css} from '@emotion/react'
 import Link from 'next/link'
 import {
-    Card as Cards, CardBody
+    Card as Cards, CardBody, Image, Title
 } from '../template/style'
 
 export default function Card(props) {
@@ -19,19 +19,6 @@ export default function Card(props) {
 
     const Card = Cards;
 
-    const Image = styled.img`
-        object-fit: cover;
-        width: 100%;
-        height: 50vh;
-    `;
-
-    const Title = styled.h5`
-        margin: 0;
-        text-align: center;
-        max-width: 14vw;
-        word-wrap: break-word;
-    `;
-
     return(
         <Link href = {{
             pathname: '/details/[id]',
@@ -42,7 +29,11 @@ export default function Card(props) {
             `}>
                 <Image src={image} />
                 <div css={css`
-                    padding: 0 1.5rem;
+                    padding: 1rem 1.5rem;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    height: 20%;
                 `}>
                     <Title>{title}</Title>
                     <CardBody>

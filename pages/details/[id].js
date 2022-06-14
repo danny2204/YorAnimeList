@@ -23,6 +23,7 @@ export default function Details() {
     const {id} = router.query;
     const [currentTab, setCurrentTab] = React.useState(1);
     const [modalState, setModalState] = React.useState("none");
+    const [detailModalState, setDetailModalState] = React.useState("none");
 
     const query = gql`
         query($id: Int) {
@@ -204,6 +205,12 @@ export default function Details() {
     useEffect(() => {
     }, [collections, anime])
 
+    const [isPageOpen, setIsPageOpen] = React.useState(true);
+
+    function changePage() {
+      setIsPageOpen(!isPageOpen);
+    }
+
     if(loading) {
         return <p>Loading...</p>
     }
@@ -229,6 +236,10 @@ export default function Details() {
         setModalState("flex");
     }
 
+    function openDetailModal() {
+        setDetailModalState("flex");
+    }
+
     function addToCollection(name) {
         var collection = name;
         if (localStorage.getItem(collection) == null){
@@ -246,127 +257,207 @@ export default function Details() {
         setModalState("none");
     }
 
+    function closeDetailModal() {
+        setDetailModalState("none");
+    }
+
     return (
         <>
-            <Navbar />
-            <Container>
-                <div style={{
-                    display: "flex",
-                    padding: "3rem"
-                }}>
-                    <Container>
-                        <Image css={css`
-                            width: 20rem;
-                            height: 25rem;
-                        `} src={data?.Media.coverImage.large} />
-                        <AddButton onClick={() => openModal()}>
-                            <svg css={css`
-                                height: 1.25rem;
-                                width: 1.25rem;
-                                margin: 0 0.25rem;
-                            `} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                             Add To Collection</AddButton>
-                        <div>
-                            <Information><b>Informations</b></Information>
-                            <hr></hr>
-                            <Information> <b>Japanese : </b> {data?.Media.title.native}</Information>
-                            <Information> <b>English : </b> {data?.Media.title.english}</Information>
-                            <Information> <b>Aired : </b> {startDate} - {endDate}</Information>
-                            <Information>
-                                <b>Studios : </b>
-                                    {data?.Media.studios.edges.map(function(s) {
-                                        return s.node.name + ", "
-                                    })}
-                            </Information>
-                        </div>
-                    </Container>
+            <Navbar action={() => changePage()} />
+            {isPageOpen && 
+                <div>
                     <Container css={css`
-                        margin-left: 2rem;
-                    `}>
-                        <div css={css`
-                            dispaly: flex;
-                            flexDirection: column;
-                            margin-bottom: 1rem;
-                        `}>
-                            <h1 css={css`
-                                font-size: 2rem;
+                        flex-direction: column;
+                        padding: 3rem;
+                    `} id="mobile-container">
+                        <Container id="mobile-container">
+                            <h1 id="mobile-title" css={css`
+                                    font-size: 1.25rem;
+                                    margin-bottom: 0.75rem;
+                                    display: none;
                             `}> {data?.Media.title.romaji} </h1>
-                            <div css={css`
-                                display: flex;
-                                flex-wrap: wrap;
-                            `}>
-                                {data?.Media.genres.map(function(g) {
-                                    return <Label>{g}</Label>
-                                })}
+                            <Image css={css`
+                                width: 20rem;
+                                height: 25rem;
+                            `} src={data?.Media.coverImage.large} />
+                            <AddButton id="add-to-collection" onClick={() => openModal()}>
+                                <svg css={css`
+                                    height: 1.25rem;
+                                    width: 1.25rem;
+                                    margin: 0 0.25rem;
+                                `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Add To Collection</AddButton>
+                            <div>
+                                <Information><b>Informations</b></Information>
+                                <hr></hr>
+                                <Information> <b>Japanese : </b> {data?.Media.title.native}</Information>
+                                <Information> <b>English : </b> {data?.Media.title.english}</Information>
+                                <Information> <b>Aired : </b> {startDate} - {endDate}</Information>
+                                <Information>
+                                    <b>Studios : </b>
+                                        {data?.Media.studios.edges.map(function(s) {
+                                            return s.node.name + ", "
+                                        })}
+                                </Information>
+                                <Information className="mobile-information" css={css`display: none;`}>
+                                    <b>Genres : </b>
+                                        {data?.Media.genres.map(function(g) {
+                                            return g + ", "
+                                        })}
+                                </Information>
+                                <Information className="mobile-information" css={css`display: none;`}>
+                                    <b>Trending : </b> {data?.Media.trending}
+                                </Information>
+                                <Information className="mobile-information" css={css`display: none;`}>
+                                    <b>Episodes : </b> {data?.Media.episodes}
+                                </Information>
+                                <Information className="mobile-information" css={css`display: none;`}>
+                                    <b>Season : </b> {data?.Media.season}
+                                </Information>
+                                <Information className="mobile-information" css={css`display: none;`}>
+                                    <b>Year : </b> {data?.Media.seasonYear}
+                                </Information>
+                                <Information className="mobile-information" css={css`display: none;`}>
+                                    <b>Type : </b> {data?.Media.type}
+                                </Information>
+                                {anime?.collections.length != 0 &&
+                                    <Information className="mobile-information" css={css`display: none;`}>
+                                        <b>Collections : </b>
+                                        <a onClick={() => openDetailModal()}>Show Collections</a>
+                                    </Information>
+                                }
                             </div>
+                        </Container>
+                        <Container id="mobile-container" css={css`
+                            margin-left: 2rem;
+                        `}>
+                            <Container id="mobile-container"  css={css`
+                                margin-bottom: 1rem;
+                            `}>
+                                <h1 id="desktop-title" css={css`
+                                    font-size: 2rem;
+                                `}> {data?.Media.title.romaji} </h1>
+                                <div id="genre-container" css={css`
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                `}>
+                                    {data?.Media.genres.map(function(g) {
+                                        return <Label>{g}</Label>
+                                    })}
+                                </div>
 
-                            <div css={css`
-                                display: flex;
-                                flex-wrap: wrap;
-                                align-items: center;
-                                background-color: #e5e7eb;
-                                padding: 1rem 0;
-                                margin: 1rem 0;
-                            `}>
-                                <SmallInformation label={"Score"} content={data?.Media.averageScore} threshold={"/100"} />
-                                <div css={css`
-                                    height: 5rem;
-                                    border-left: 1px solid black;
-                                `} />
-                                <SmallInformation label={"Trending"} content={data?.Media.trending} />
-                                <SmallInformation label={"Episodes"} content={data?.Media.episodes} />
-                                <SmallInformation label={"Season"} content={data?.Media.season} />
-                                <SmallInformation label={"Year"} content={data?.Media.seasonYear} />
-                                <SmallInformation label={"Type"} content={data?.Media.type} />
-                            </div>
-                            
-                            {anime && anime?.collections.length != 0 && 
-                                <>
-                                    <h1 css={css`
-                                        font-size: 1.5rem;
-                                    `}>Collections : </h1>
-                                    <hr css={css`
-                                        margin: 0.5rem 0;
-                                    `}/>
+                                <div className='desktop-information' css={css`
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                    align-items: center;
+                                    background-color: #e5e7eb;
+                                    padding: 1rem 0;
+                                    margin: 1rem 0;
+                                `}>
+                                    <SmallInformation label={"Score"} content={data?.Media.averageScore} threshold={"/100"} />
+                                    <div css={css`
+                                        height: 5rem;
+                                        border-left: 1px solid black;
+                                    `} />
+                                    <SmallInformation label={"Trending"} content={data?.Media.trending} />
+                                    <SmallInformation label={"Episodes"} content={data?.Media.episodes} />
+                                    <SmallInformation label={"Season"} content={data?.Media.season} />
+                                    <SmallInformation label={"Year"} content={data?.Media.seasonYear} />
+                                    <SmallInformation label={"Type"} content={data?.Media.type} />
+                                </div>
+
+                                <div className='mobile-information' css={css`
+                                    display: none;
+                                    flex-wrap: wrap;
+                                    align-items: center;
+                                    background-color: #e5e7eb;
+                                    padding: 0 0 1rem 0;
+                                    margin: 1rem 0;
+                                    width: 100%;
+                                `}>
+                                    <div css={css`
+                                        width: 100%;
+                                        background-color: rgb(66, 120, 245);
+                                        text-align: center;
+                                        color: white;
+                                        font-size: 1rem;
+                                        padding: 0.25rem 0;
+                                    `}>
+                                        Score
+                                    </div>
                                     <div css={css`
                                         display: flex;
-                                        flex-wrap: wrap;
+                                        align-items: flex-end;
+                                        justify-content: center;
                                     `}>
-                                        {anime?.collections.map((c) => {
-                                            return <Link href={`/collections/${c}`}>
-                                                <Label css={css`
-                                                    &:hover {
-                                                        background-color: #4338ca;
-                                                        cursor: pointer;
-                                                    }
-                                                `}>{c}</Label>
-                                            </Link>
-                                        })}
-                                    </div> 
-                                </>
-                            }
+                                        <h1 css={css`
+                                            font-size: 2rem;
+                                        `}> {data?.Media.averageScore} </h1> /100
+                                    </div>
+                                </div>
+                                
+                                {anime && anime?.collections.length != 0 && 
+                                    <div className="desktop-information">
+                                        <h1 css={css`
+                                            font-size: 1.5rem;
+                                        `}>Collections : </h1>
+                                        <hr css={css`
+                                            margin: 0.5rem 0;
+                                        `}/>
+                                        <div css={css`
+                                            display: flex;
+                                            flex-wrap: wrap;
+                                        `}>
+                                            {anime?.collections.map((c) => {
+                                                return <Link href={`/collections/${c}`}>
+                                                    <Label css={css`
+                                                        &:hover {
+                                                            background-color: #4338ca;
+                                                            cursor: pointer;
+                                                        }
+                                                    `}>{c}</Label>
+                                                </Link>
+                                            })}
+                                        </div> 
+                                    </div>
+                                }
 
-                            <h1 css={css`
-                                font-size: 1.5rem;
-                            `}>Synopsis : </h1>
-                            <hr css={css`
-                                margin: 0.5rem 0;
-                            `}/>
-                            <p>
-                                {data?.Media.description}
-                            </p>
-                        </div>
+                                <h1 css={css`
+                                    font-size: 1.5rem;
+                                `}>Synopsis : </h1>
+                                <hr css={css`
+                                    margin: 0.5rem 0;
+                                `}/>
+                                <p>
+                                    {data?.Media.description}
+                                </p>
+                            </Container>
 
-                        <Tabs characterTab={() => changeTab(1)} staffTab={() => changeTab(2)}>
-                            {children}
-                        </Tabs>
+                            <Tabs characterTab={() => changeTab(1)} staffTab={() => changeTab(2)}>
+                                {children}
+                            </Tabs>
+                        </Container>
+                        <Modals title="Collections" buttonDisplay="none" addToCollection={addToCollection} onClose={closeDetailModal} display={detailModalState} data={collections} />
+                        <Modals title="Add To Collections" buttonDisplay="flex" addToCollection={addToCollection} onClose={closeModal} display={modalState} data={collections} />
                     </Container>
                 </div>
-
-                <Modals addToCollection={addToCollection} onClose={closeModal} display={modalState} data={collections} />
-            </Container>
+            }
+            {!isPageOpen &&  
+                <div>
+                <Link href="/">
+                  <p>
+                    Home
+                  </p>
+                </Link>
+                <Link href="/collections">
+                  <p>
+                    Collections
+                  </p>
+                </Link>
+              </div>
+            }
         </>
     )
 }

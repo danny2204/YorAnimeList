@@ -11,6 +11,7 @@ import Link from 'next/link';
 import Navbar from '../../components/navbar';
 import { css } from '@emotion/react';
 import {AddModals} from '../../components/modal';
+import Header from '../../components/page/header';
 
 export default function Collections() {
     const Container = ContainerTemplate;
@@ -28,8 +29,8 @@ export default function Collections() {
             for (let index = 0; index < Object.entries(localStorage).length; index++) {
                 if (localStorage.key(index) != "ally-supports-cache") {
                     var value = JSON.parse(localStorage.getItem(localStorage.key(index)));
-                    console.log(value)
                     if(Array.isArray(value)) {
+                        console.log(value)
                         key.push(localStorage.key(index));
                         col.push(value);
                     }
@@ -78,12 +79,11 @@ export default function Collections() {
                     align-items: center;
                     padding-right: 3rem;
                 `}>
-                    <PageTitle>
-                        Collections Lists
-                    </PageTitle>
-                    <AddButton onClick={() => openModal()}>
-                        Add New Collection
-                    </AddButton>
+                    <Header title="Collections Lists" additional={
+                        <AddButton onClick={() => openModal()}>
+                            Add New Collection
+                        </AddButton>
+                    } />
                 </div>
                 <hr css={css`
                     margin: 0 3rem;
@@ -92,7 +92,7 @@ export default function Collections() {
                     display: flex;
                     justify-content: center;
                 `}>
-                    <div css={css`
+                    <div className='collection-card' css={css`
                         display: flex;
                         flex-wrap: wrap;
                         width: 82%;
@@ -109,6 +109,7 @@ export default function Collections() {
                                 </h1>
                             }
                             {collections.length != 0 && collections?.map(function(c, index) {
+
                                 return (
                                     <>
                                         <div css={css`
@@ -120,7 +121,7 @@ export default function Collections() {
                                                             <img css={css`
                                                                 height: 5.25rem;
                                                                 width: 4rem;
-                                                            `} src={c[0].Media.coverImage.medium} />
+                                                            `} src={c[0]?.Media.coverImage.medium} />
                                                         }
                                                         <div css={css`
                                                             margin-left: 1rem;
@@ -147,13 +148,30 @@ export default function Collections() {
                                                                 width: 1.5rem;
                                                                 top: 0.5rem;
                                                                 right: 0.5rem;
-                                                            `} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                             </svg>
                                                         </a> */}
                                                 </CollectionContainer>
                                             </Link>
-                                            <DeleteButton onClick={() => removeCollection(keys[index])}>Delete Collection</DeleteButton>
+                                            <DeleteButton onClick={() => removeCollection(keys[index])}>
+                                                <p className='default-delete-label'>
+                                                    Delete Collection
+                                                </p>
+                                                <a className='delete-svg' css={css`
+                                                    color: white;
+                                                    font-size: 0.75rem;
+                                                    display: none;
+                                                `} onClick={() => removeCollection(keys[index])}>
+                                                    <svg css={css`
+                                                        width: 1.5rem;
+                                                        top: 0.5rem;
+                                                        right: 0.5rem;
+                                                    `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </a>
+                                            </DeleteButton>
                                         </div>
                                     </>
                                 );

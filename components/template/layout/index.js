@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import 
     Card
 from "../../card";
-import { DeleteButton } from "../style";
+import { Container, DeleteButton } from "../style";
 import {css} from "@emotion/react"
 
 export default function Layout(props) {
@@ -18,13 +18,18 @@ export default function Layout(props) {
     }
 
     const Containers = styled.div`
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        // display: flex;
+        // flex-wrap: wrap;
+        // justify-content: center;
     `;
 
     return(
-        <Containers>
+        <div css={css`
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        `}>
             {isPage == true && data != null ? data?.Page.media.map(function(d, idx) {
                 return (<Card style={{margin: "1rem 1rem"}} key={idx}
                   season={d.seasonInt} episode={d.episodes}
@@ -48,6 +53,6 @@ export default function Layout(props) {
                     </div>
                   )
               })}
-        </Containers>
+        </div>
     )
 }

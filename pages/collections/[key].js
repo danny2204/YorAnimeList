@@ -7,6 +7,7 @@ import React, { useEffect } from 'react'
 import Layout from "../../components/template/layout";
 import Navbar from "../../components/navbar";
 import {css} from "@emotion/react";
+import Link from "next/link";
 
 export default function CollectionDetails() {
     const router = useRouter();
@@ -31,18 +32,44 @@ export default function CollectionDetails() {
         setFlag(!flag);
     }
 
+    const [isPageOpen, setIsPageOpen] = React.useState(true);
+
+    function changePage() {
+      setIsPageOpen(!isPageOpen);
+    }
+
     return (
         <>
-            <Navbar />
-            <PageTitle>
-                Collections Detail
-            </PageTitle>
-            <hr css={css`
-                margin: 0 3rem;
-            `} />
-            <Container>
-                <Layout data={collection} isPage={false} action={removeFromCollection} />
-            </Container>
+            <Navbar action={() => changePage()} />
+            {isPageOpen && 
+                <>
+                    <Container>
+                        <PageTitle>
+                            Collections Detail
+                        </PageTitle>
+                        <hr css={css`
+                            margin: 0 3rem;
+                        `} />
+                    </Container>
+                    <Container>
+                        <Layout data={collection} isPage={false} action={removeFromCollection} />
+                    </Container>
+                </>
+            }
+            {!isPageOpen &&  
+                <div>
+                <Link href="/">
+                  <p>
+                    Home
+                  </p>
+                </Link>
+                <Link href="/collections">
+                  <p>
+                    Collections
+                  </p>
+                </Link>
+              </div>
+            }
         </>
     )
 }

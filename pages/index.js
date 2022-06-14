@@ -6,6 +6,8 @@ import { gql, useLazyQuery } from '@apollo/client'
 import Layout from '../components/template/layout'
 import { css } from '@emotion/react'
 import { Container, PageTitle } from '../components/template/style'
+import Header from '../components/page/header'
+import Link from 'next/link'
 
 export default function Home() {
   const [pages, setPage] = React.useState(1);
@@ -58,22 +60,45 @@ export default function Home() {
   function goTo(x) {
     setPage(x);
   }
+
+  const [isPageOpen, setIsPageOpen] = React.useState(true);
+
+  function changePage() {
+    setIsPageOpen(!isPageOpen);
+  }
+
+  if(loading) {
+    return <p>Loading...</p>
+  }
   
   return (
     <div>
-      <Navbar />
-      <PageTitle>
-          Anime Lists
-      </PageTitle>
-      <hr css={css`
-        margin: 0 3rem;
-      `} />
-      <Container css={css`
-        align-items: center;
-      `}>
-        <Layout isPage={true} data={data} />
-      </Container>
-      <Pagination pages={data?.Page.pageInfo.lastPage} currentPage={pages} previous={() => previous()} goTo={goTo} next={() => next()} />
+      <Navbar action={() => changePage()} />
+      {isPageOpen && 
+        <div>
+          <Header title={"Anime Lists"} />
+          <Container css={css`
+            align-items: center;
+          `}>
+            <Layout isPage={true} data={data} />
+          </Container>
+          <Pagination pages={data?.Page.pageInfo.lastPage} currentPage={pages} previous={() => previous()} goTo={goTo} next={() => next()} />
+        </div>
+      }
+      {!isPageOpen &&
+        <div>
+          <Link href="/">
+            <p>
+              Home
+            </p>
+          </Link>
+          <Link href="/collections">
+            <p>
+              Collections
+            </p>
+          </Link>
+        </div>
+      }
     </div>
   )
 }
