@@ -186,7 +186,7 @@ export default function Collections() {
                                                                     <img css={css`
                                                                         height: 5.25rem;
                                                                         width: 4rem;
-                                                                    `} src={c[0]?.Media?.coverImage.medium} />
+                                                                    `} src={c[0]?.coverImage.medium} />
                                                                 }
                                                                 <div css={css`
                                                                     margin-left: 1rem;
@@ -201,7 +201,7 @@ export default function Collections() {
                                                                     <p css={css`
                                                                         color: rgb(156 163 175)
                                                                     `}>
-                                                                    Anime : {c.length > 0 && c[0].Media.title.romaji} 
+                                                                    Anime : {c.length > 0 && c[0].title.romaji} 
                                                                     </p>
                                                                 </div>                                                        
                                                                 {/* <a css={css`
