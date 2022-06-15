@@ -65,7 +65,7 @@ export default function Pagination(props) {
 
     return(
         <div css={css`
-            margin: 0 0 1.5rem 1.5rem;
+            margin: 1.5rem 0 1.5rem 1.5rem;
         `}>
             {buttons.map(function(b) {
                 return(b);

@@ -26,7 +26,7 @@ export default function CollectionDetails() {
         localStorage.setItem(id, JSON.stringify(anime));
         var collections = JSON.parse(localStorage.getItem(key));
         collections.splice(collections.indexOf(collections.filter(col => {
-            return col.Media.id == id;
+            return col.id == id;
         }, 1)));
         localStorage.setItem(key, JSON.stringify(collections));
         setFlag(!flag);
@@ -52,7 +52,22 @@ export default function CollectionDetails() {
                         `} />
                     </Container>
                     <Container>
-                        <Layout data={collection} isPage={false} action={removeFromCollection} />
+                        {collection.length != 0 &&
+                            <Layout data={collection} isPage={false} action={removeFromCollection} />
+                        }
+                        {collection.length == 0 &&
+                            <div css={css`
+                                width: 90rem;
+                                padding: 0 10rem;
+                            `}>
+                                <h1 css={css`
+                                    color: rgb(156 163 175);
+                                    margin-top: 3rem;
+                                `}>
+                                    No Anime in This Collection
+                                </h1>
+                            </div>
+                        }
                     </Container>
                 </>
             }

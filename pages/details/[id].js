@@ -55,6 +55,7 @@ export default function Details() {
                 type
                 genres
                 season
+                seasonInt
                 seasonYear
                 episodes
                 averageScore
@@ -224,16 +225,16 @@ export default function Details() {
     }
 
     function addAnime(collection, data) {
-        if (!localStorage.getItem(data.Media.id)) {
+        if (!localStorage.getItem(data.id)) {
             var anime = Object.assign({collections: [collection]}, data)
-            localStorage.setItem(data.Media.id, JSON.stringify(anime));
+            localStorage.setItem(data.id, JSON.stringify(anime));
         } else {
-            var animeCollections = JSON.parse(localStorage.getItem(data.Media.id));
+            var animeCollections = JSON.parse(localStorage.getItem(data.id));
             animeCollections.collections.push(collection);
-            localStorage.setItem(data.Media.id, JSON.stringify(animeCollections));
+            localStorage.setItem(data.id, JSON.stringify(animeCollections));
         }
         setCollections(getAllCollections());
-        setAnime(JSON.parse(localStorage.getItem(data?.Media.id)));
+        setAnime(JSON.parse(localStorage.getItem(data?.id)));
     }
 
     function openModal() {
@@ -247,23 +248,23 @@ export default function Details() {
     function addToCollection(name) {
         var collection = name;
         if (localStorage.getItem(collection) == null){
-            localStorage.setItem(collection, JSON.stringify([data]));
-            addAnime(collection, data);
+            localStorage.setItem(collection, JSON.stringify([data.Media]));
+            addAnime(collection, data.Media);
             setToastState("success");
                 setInterval(function() {
                     setToastState("")
                 }, 3000);
         } else {
             var test = JSON.parse(localStorage.getItem(collection));
-            if(test.indexOf(data) != -1) {
+            if(test.indexOf(data.Media) != -1) {
                 setToastState("error");
                 setInterval(function() {
                     setToastState("")
                 }, 3000);
-            } else if(test.indexOf(data) == -1) {
-                test.push(data);
+            } else if(test.indexOf(data.Media) == -1) {
+                test.push(data.Media);
                 localStorage.setItem(collection, JSON.stringify(test));
-                addAnime(collection, data);
+                addAnime(collection, data.Media);
                 setToastState("success");
                 setInterval(function() {
                     setToastState("")
@@ -286,7 +287,7 @@ export default function Details() {
             <Navbar action={() => changePage()} />
             {isPageOpen && 
                 <div>
-                    <Container id="test" css={css`
+                    <Container css={css`
                         flex-direction: row;
                         padding: 3rem;
                     `} id="mobile-container">
@@ -297,7 +298,7 @@ export default function Details() {
                                     display: none;
                             `}> {data?.Media.title.romaji} </h1>
                             <Image css={css`
-                                width: 20rem;
+                                width: 21.5rem;
                                 height: 25rem;
                             `} src={data?.Media.coverImage.large} />
                             <AddButton id="add-to-collection" onClick={() => openModal()}>

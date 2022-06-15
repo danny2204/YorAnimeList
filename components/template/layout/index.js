@@ -95,7 +95,6 @@ export default function Layout(props) {
     function addBulkCollection(name) {
         var collection = name;
         checkedAnime.forEach(data => {
-            console.log(data);
             if (localStorage.getItem(collection) == null){
                 localStorage.setItem(collection, JSON.stringify([data]));
                 addAnime(collection, data);
@@ -141,7 +140,7 @@ export default function Layout(props) {
                             flex-direction: row;
                             flex-wrap: wrap;
                             justify-content: center;
-                        `}>
+                        `} key={idx}>
                             <div className="outer-card-container" css={css`
                                 position: relative;
                             `}>
@@ -177,18 +176,18 @@ export default function Layout(props) {
                     return (
                         <div className="collection-detail-container" css={css`
                             margin: 1rem 0.25rem;
-                        `}>
+                        `} key={idx}>
                             <Card
                                 className="mobile-anime-container"
                                 style={style}
                                 key={idx}
-                                season={d.Media.seasonInt} episode={d.Media.episodes}
-                                title={d.Media.title.romaji} image={d.Media.coverImage.large}
-                                id={d.Media.id}>
+                                season={d.seasonInt} episode={d.episodes}
+                                title={d.title.romaji} image={d.coverImage.large}
+                                id={d.id}>
                             </Card>
                             <DeleteButton css={css`
                                 width: 15rem;
-                            `} onClick={() => action(d.Media.id)}>
+                            `} onClick={() => action(d.id)}>
                                 <p className='default-delete-label'>
                                     Remove From Collection
                                 </p>
@@ -220,8 +219,8 @@ export default function Layout(props) {
                         <svg css={css`
                             color: white;
                             width: 2rem;
-                        `} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                         </svg>
                     </div>
                 }
@@ -244,8 +243,8 @@ export default function Layout(props) {
                                 <svg css={css`
                                     color: white;
                                     width: 2rem;
-                                `} xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                                `} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
                                 </svg>
                             </div>
                         }
@@ -257,23 +256,16 @@ export default function Layout(props) {
                             <svg css={css`
                                 color: white;
                                 width: 2rem;
-                            `} xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </div>
                     </div>
                 }
             </div>
-            {collection.length != 0 && 
-                <Modals css={css`
-                    z-index: 9900;
-                `} addToCollection={addBulkCollection} title={"Add To Collection"} buttonDisplay={"none"} display={modalState} onClose={() => closeAddModal()} data={collection} />
-            }
-            {collection.length == 0 &&
-                <Modals css={css`
-                    z-index: 9900;
-                `} addToCollection={addBulkCollection} title={"Add To Collection"} buttonDisplay={"flex"} display={modalState} onClose={() => closeAddModal()} data={collection} />        
-            }
+            <Modals css={css`
+                z-index: 9900;
+            `} addToCollection={addBulkCollection} title={"Add To Collection"} buttonDisplay={"flex"} display={modalState} onClose={() => closeAddModal()} data={collection} />
             <SnackBar type={toastState} failedContent="Failed To Add New Collection" successContent="Successfully Add New Collection" />
         </div>
     )

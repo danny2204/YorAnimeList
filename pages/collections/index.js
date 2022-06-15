@@ -58,9 +58,9 @@ export default function Collections() {
         setKeys(arr);
         var col = JSON.parse(localStorage.getItem(collection));
         col.forEach(c => {
-            var anime = JSON.parse(localStorage.getItem(c.Media.id));
+            var anime = JSON.parse(localStorage.getItem(c.id));
             anime.collections.splice(anime.collections.indexOf(collection), 1);
-            localStorage.setItem(anime.Media.id, JSON.stringify(anime));
+            localStorage.setItem(anime.id, JSON.stringify(anime));
         });
         localStorage.removeItem(collection);
         setToastState("success");
@@ -77,9 +77,9 @@ export default function Collections() {
         localStorage.setItem(newCollection, localStorage.getItem(oldCollection));
         var col = JSON.parse(localStorage.getItem(oldCollection));
         col.forEach(c => {
-            var anime = JSON.parse(localStorage.getItem(c.Media.id));
+            var anime = JSON.parse(localStorage.getItem(c.id));
             anime.collections[anime.collections.indexOf(oldCollection)] = newCollection;
-            localStorage.setItem(anime.Media.id, JSON.stringify(anime));
+            localStorage.setItem(anime.id, JSON.stringify(anime));
         });
         localStorage.removeItem(oldCollection);
         setToastState("success");
@@ -145,8 +145,8 @@ export default function Collections() {
                                         <svg id="svg-header-label" css={css`
                                             color: rgb(66, 120, 245);
                                             width: 3.5rem;
-                                        `} xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="rgb(66, 120, 245)">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                                        `} xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="rgb(66, 120, 245)">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clipRule="evenodd" />
                                         </svg>
                                     </AddButton>
                                 </>
@@ -162,7 +162,7 @@ export default function Collections() {
                             <div className='collection-card' css={css`
                                 display: flex;
                                 flex-wrap: wrap;
-                                width: 82%;
+                                width: 90rem;
                                 align-items: center;
                                 justify-content: space-between;
                             `}>
@@ -179,7 +179,7 @@ export default function Collections() {
                                             <>
                                                 <div css={css`
                                                     margin: 1rem 0.75rem;
-                                                `}>
+                                                `} key={index}>
                                                     <Link href={`/collections/${keys[index]}`}>
                                                         <CollectionContainer>
                                                                 {c.length != 0 && 
@@ -251,7 +251,7 @@ export default function Collections() {
                                                                 top: 0.5rem;
                                                                 right: 0.5rem;
                                                             `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                             </svg>
                                                         </a>
                                                     </UpdateButton>
@@ -264,7 +264,7 @@ export default function Collections() {
                         </div>
                     </Container>
                     <AddModals onAdd={addNewCollection} onClose={closeModal} display={modalState} />
-                    <EditModals display={updateModalState} oldValue={currentCollection} onSubmit={updateCollection} onClose={closeUpdateModal} display={updateModalState} />
+                    <EditModals display={updateModalState} oldValue={currentCollection} onSubmit={updateCollection} onClose={closeUpdateModal} />
                     <SnackBar type={toastState} failedContent="Failed" successContent="Success" />
                 </>
             }

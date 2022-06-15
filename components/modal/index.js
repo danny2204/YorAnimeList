@@ -92,7 +92,7 @@ export function EditModals(props) {
                     width: 100%;
                     margin-top: 0.75rem;
                 `} />
-                <Input placeholder="Input Collection Name" placeholder={oldValue} onChange={(e) => setContent(e.target.value)} />
+                <Input placeholder={oldValue} onChange={(e) => setContent(e.target.value)} />
                 <div css={css`
                     display: flex;
                     width: 100%;
@@ -166,14 +166,14 @@ export function Modals(props) {
                                 cursor: pointer;
                                 background-color: rgb(229 231 235);
                             }
-                        `} onClick={() => addToCollection(d)}>
+                        `} key={d} onClick={() => addToCollection(d)}>
                             {d}
                         </ListItem>
                     })}
 
                     {buttonDisplay == "none" && data?.map((d) => {
                         return (
-                            <Link href={`/collections/${d}`}>
+                            <Link key={d} href={`/collections/${d}`}>
                                 <ListItem css={css`
                                     padding-left: 2rem;
 
