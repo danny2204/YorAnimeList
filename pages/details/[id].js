@@ -11,12 +11,14 @@ import {
     Information,
     Label,
     ListItem,
-    SmallLabel
+    Loader
 } from '../../components/template/style';
 import {css} from '@emotion/react';
 import SmallInformation from '../../components/template/SmallInformation';
 import {Modals} from '../../components/modal';
 import Link from 'next/link';
+import SnackBar from '../../components/snackbar';
+import parse from 'html-react-parser';
 
 export default function Details() {
     const router = useRouter();
@@ -24,6 +26,7 @@ export default function Details() {
     const [currentTab, setCurrentTab] = React.useState(1);
     const [modalState, setModalState] = React.useState("none");
     const [detailModalState, setDetailModalState] = React.useState("none");
+    const [snackBarState, setSnackBarState] = React.useState("none");
 
     const query = gql`
         query($id: Int) {
@@ -206,13 +209,14 @@ export default function Details() {
     }, [collections, anime])
 
     const [isPageOpen, setIsPageOpen] = React.useState(true);
+    const [toastState, setToastState] = React.useState("");
 
     function changePage() {
       setIsPageOpen(!isPageOpen);
     }
 
     if(loading) {
-        return <p>Loading...</p>
+        return <Loader />
     }
 
     function changeTab(x) {
@@ -245,11 +249,27 @@ export default function Details() {
         if (localStorage.getItem(collection) == null){
             localStorage.setItem(collection, JSON.stringify([data]));
             addAnime(collection, data);
+            setToastState("success");
+                setInterval(function() {
+                    setToastState("")
+                }, 3000);
         } else {
             var test = JSON.parse(localStorage.getItem(collection));
-            test.push(data);
-            localStorage.setItem(collection, JSON.stringify(test));
-            addAnime(collection, data);
+            if(test.indexOf(data) != -1) {
+                setToastState("error");
+                setInterval(function() {
+                    setToastState("")
+                }, 3000);
+            } else if(test.indexOf(data) == -1) {
+                test.push(data);
+                localStorage.setItem(collection, JSON.stringify(test));
+                addAnime(collection, data);
+                setToastState("success");
+                setInterval(function() {
+                    setToastState("")
+                }, 3000);
+                closeModal()
+            }
         }
     }
 
@@ -266,8 +286,8 @@ export default function Details() {
             <Navbar action={() => changePage()} />
             {isPageOpen && 
                 <div>
-                    <Container css={css`
-                        flex-direction: column;
+                    <Container id="test" css={css`
+                        flex-direction: row;
                         padding: 3rem;
                     `} id="mobile-container">
                         <Container id="mobile-container">
@@ -322,7 +342,7 @@ export default function Details() {
                                 <Information className="mobile-information" css={css`display: none;`}>
                                     <b>Type : </b> {data?.Media.type}
                                 </Information>
-                                {anime?.collections.length != 0 &&
+                                {anime != null && anime?.collections.length != 0 &&
                                     <Information className="mobile-information" css={css`display: none;`}>
                                         <b>Collections : </b>
                                         <a onClick={() => openDetailModal()}>Show Collections</a>
@@ -431,7 +451,7 @@ export default function Details() {
                                     margin: 0.5rem 0;
                                 `}/>
                                 <p>
-                                    {data?.Media.description}
+                                    {parse(data?.Media.description)}
                                 </p>
                             </Container>
 
@@ -441,22 +461,27 @@ export default function Details() {
                         </Container>
                         <Modals title="Collections" buttonDisplay="none" addToCollection={addToCollection} onClose={closeDetailModal} display={detailModalState} data={collections} />
                         <Modals title="Add To Collections" buttonDisplay="flex" addToCollection={addToCollection} onClose={closeModal} display={modalState} data={collections} />
+                        <SnackBar type={toastState} failedContent="Failed To Add New Collection" successContent="Successfully Add New Collection" />
                     </Container>
                 </div>
             }
             {!isPageOpen &&  
                 <div>
-                <Link href="/">
-                  <p>
-                    Home
-                  </p>
-                </Link>
-                <Link href="/collections">
-                  <p>
-                    Collections
-                  </p>
-                </Link>
-              </div>
+                    <Link href="/">
+                        <ListItem css={css`
+                            padding-left: 2rem;
+                        `}>
+                            Home
+                        </ListItem>
+                    </Link>
+                    <Link href="/collections">
+                        <ListItem css={css`
+                            padding-left: 2rem;
+                        `}>
+                            Collections
+                        </ListItem>
+                    </Link>
+                </div>
             }
         </>
     )

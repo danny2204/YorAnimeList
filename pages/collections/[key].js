@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import {
-    Container as ContainerTemplate, PageTitle
+    Container as ContainerTemplate, ListItem, PageTitle
 } from "../../components/template/style"
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
@@ -58,17 +58,21 @@ export default function CollectionDetails() {
             }
             {!isPageOpen &&  
                 <div>
-                <Link href="/">
-                  <p>
-                    Home
-                  </p>
-                </Link>
-                <Link href="/collections">
-                  <p>
-                    Collections
-                  </p>
-                </Link>
-              </div>
+                    <Link href="/">
+                        <ListItem css={css`
+                            padding-left: 2rem;
+                        `}>
+                            Home
+                        </ListItem>
+                    </Link>
+                    <Link href="/collections">
+                        <ListItem css={css`
+                            padding-left: 2rem;
+                        `}>
+                            Collections
+                        </ListItem>
+                    </Link>
+                </div>
             }
         </>
     )

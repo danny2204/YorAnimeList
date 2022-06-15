@@ -4,6 +4,10 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
 
+    #collection-list-button {
+        display: none;
+    }
+
     @media only screen and (max-width: 400px) {
         flex-direction: column;
         padding: 0.75rem;
@@ -40,6 +44,7 @@ export const Container = styled.div`
 
         .collection-card {
             width: 100%;
+            justify-content: center;
         }
 
         .divider {
@@ -52,6 +57,33 @@ export const Container = styled.div`
 
         .default-delete-label {
             display: none;
+        }
+
+        #collections-detail-container {
+            grid-template-columns: repeat(2, minmax(0,1fr));
+            gap: 0;
+        }
+        
+        #default-collection-list-button {
+            display: none;
+        }
+
+        .collection-list-delete-button {
+            width: 9rem;
+        }
+
+        #collection-list-button {
+            background-color: transparent;
+            position: fixed;
+            bottom: 2.5rem;
+            color: white;
+            right: -2rem;
+            z-index: 10;
+            display: block;
+        }
+
+        .outer-card-container {
+            margin: 1rem 0.25rem;
         }
     }
 `;
@@ -105,10 +137,9 @@ export const Card = styled.div`
     border-top-width: 0px;
     border-bottom-width: 1px;
     border: 1px solid rgb(209 213 219);
-    margin: 1rem 1rem;
     padding-bottom: 1rem;
-    width: 20rem;
-    height: 65vh;
+    width: 15rem;
+    height: 30rem;
 
     &:hover {
         border: 1px solid rgb(156 163 175);
@@ -117,8 +148,11 @@ export const Card = styled.div`
 
     @media only screen and (max-width: 400px) {
         width: 10rem;
-        height: 15rem;
-        margin: 1rem 0.25rem;
+        height: 13rem;
+
+        .mobile-anime-container {
+            margin: 0 !important;
+        }
     }
 `;
 
@@ -127,6 +161,7 @@ export const CardBody = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: flex-end;
+    padding: 0 1rem;
 
     @media only screen and (max-width: 400px) {
         display: none;
@@ -228,6 +263,24 @@ export const AddButton = styled.button`
         background-color: #4338ca;
         cursor: pointer;
     }
+
+    @media only screen and (max-width: 400px) {
+        height: 2rem;
+        width: 7.5rem;
+        font-size: 0.75rem;
+
+        > svg {
+            display: none;
+        }
+
+        #default-header-label {
+            display: none;
+        }
+
+        #svg-header-label {
+            display: block;
+        }
+    }
 `;
 
 export const CancelButton = styled.button`
@@ -244,6 +297,15 @@ export const CancelButton = styled.button`
     &:hover {
         background-color: rgba(189, 28, 28, 0.75);
         cursor: pointer;
+    }
+
+    @media only screen and (max-width: 400px) {
+        height: 2rem;
+        width: 7.5rem;
+
+        svg {
+            display: none;
+        }
     }
 `;
 
@@ -378,6 +440,10 @@ export const CollectionContainer = styled.div`
 export const PageTitle = styled.h1`
     font-size: 1.5rem;
     padding: 1.5rem 3rem;
+
+    @media only screen and (max-width: 400px) {
+        padding: 0.5rem 1rem;
+    }
 `;
 
 export const DeleteButton = styled.button`
@@ -385,10 +451,9 @@ export const DeleteButton = styled.button`
     justify-content: center;
     padding: 0.5rem 1rem;
     border-width: 0;
-    width: 100%;
+    width: 15rem;
     box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     border-bottom-left-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;
     color: white;
     background-color: rgb(189, 28, 28);
 
@@ -396,12 +461,44 @@ export const DeleteButton = styled.button`
         background-color: rgba(189, 28, 28, 0.75);
         cursor: pointer;
     }
+
+    @media only screen and (max-width: 400px) {
+        width: 10rem;
+        height: 2rem;
+        padding: 0;
+        align-items: center;
+    }
+`;
+
+export const UpdateButton = styled.button`
+    display: inline-flex;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-width: 0;
+    width: 15rem;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    // border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    color: white;
+    background-color: rgb(66, 96, 201);
+
+    &:hover {
+        background-color: rgba(66, 96, 201, 0.75);
+        cursor: pointer;
+    }
+
+    @media only screen and (max-width: 400px) {
+        width: 10rem;
+        height: 2rem;
+        padding: 0;
+        align-items: center;
+    }
 `;
 
 export const Image = styled.img`
     object-fit: cover;
     width: 100%;
-    height: 50vh;
+    height: 80%;
 
     @media only screen and (max-width: 400px) {
         height: 10rem;
@@ -412,7 +509,7 @@ export const Image = styled.img`
 export const Title = styled.h5`
     margin: 0;
     text-align: center;
-    width: 17rem;
+    width: 12rem;
     word-wrap: break-word;
 
     @media only screen and (max-width: 400px) {
@@ -426,4 +523,108 @@ export const BurgerBar = styled.div`
     height: 0.2rem;
     background-color: white;
     margin: 0.25rem 0;
+`;
+
+export const Head = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+export const Loader = styled.div`
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 50px;
+    width: 50px;
+    margin: -25px 0 0 -25px;
+    border: 2px solid transparent;
+    border-top-color: #000000;
+    border-radius: 50%;
+    -webkit-animation: spin7 1.5s ease infinite;
+    animation: spin7 1.5s ease infinite;
+  
+    &:before {
+        content: "";
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        bottom: 7px;
+        left: 7px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        border-top-color: #000000;
+        -webkit-animation: spin7 3s linear infinite;
+                animation: spin7 3s linear infinite;
+    }
+    
+    &:after {
+        content: "";
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        bottom: 15px;
+        left: 15px;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        border-top-color: #000000;
+        -webkit-animation: spin7 1.5s ease infinite;
+                animation: spin7 1.5s ease infinite;
+    }
+
+    @keyframes spin7 {
+        from {
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+        }
+        to {
+        -webkit-transform: rotate(359deg);
+                transform: rotate(359deg);
+        -webkit-transform: rotate(359deg);
+                transform: rotate(359deg);
+        }
+    }
+`;
+
+export const SuccessToast = styled.div`
+    background-color: rgb(67, 191, 67);
+    border-radius: 0.25rem;
+    border: 1px solid rgb(69, 247, 82);
+    padding: 1rem;
+    width: 25rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    z-index: 2;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    color: white;
+
+    @media only screen and (max-width: 400px) {
+        width: 80%;
+    }
+`;
+
+export const ErrorToast = styled.div`
+    background-color: rgb(196, 57, 69);
+    border-radius: 0.25rem;
+    border: 1px solid rgb(252, 71, 71);
+    padding: 1rem;
+    width: 25rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    z-index: 2;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    color: white;
+
+    @media only screen and (max-width: 400px) {
+        width: 80%;
+    }
 `;

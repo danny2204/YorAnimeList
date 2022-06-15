@@ -5,7 +5,7 @@ import Pagination from '../components/pagination'
 import { gql, useLazyQuery } from '@apollo/client'
 import Layout from '../components/template/layout'
 import { css } from '@emotion/react'
-import { Container, PageTitle } from '../components/template/style'
+import { Container, ListItem, Loader, PageTitle } from '../components/template/style'
 import Header from '../components/page/header'
 import Link from 'next/link'
 
@@ -68,7 +68,7 @@ export default function Home() {
   }
 
   if(loading) {
-    return <p>Loading...</p>
+    return <Loader />
   }
   
   return (
@@ -87,16 +87,20 @@ export default function Home() {
       }
       {!isPageOpen &&
         <div>
-          <Link href="/">
-            <p>
-              Home
-            </p>
-          </Link>
-          <Link href="/collections">
-            <p>
-              Collections
-            </p>
-          </Link>
+            <Link href="/">
+                <ListItem css={css`
+                    padding-left: 2rem;
+                `}>
+                    Home
+                </ListItem>
+            </Link>
+            <Link href="/collections">
+                <ListItem css={css`
+                    padding-left: 2rem;
+                `}>
+                    Collections
+                </ListItem>
+            </Link>
         </div>
       }
     </div>

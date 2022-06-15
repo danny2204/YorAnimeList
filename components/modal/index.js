@@ -67,6 +67,63 @@ export function AddModals(props) {
     )
 }
 
+export function EditModals(props) {
+    const {
+        display,
+        onClose,
+        onSubmit,
+        oldValue
+    } = props;
+
+    const [content, setContent] = React.useState("");
+
+    function submit() {
+        onSubmit(oldValue, content);
+        onClose();
+    }
+
+    return(
+        <ModalContainer css={css`
+            display: ${display}
+        `}>
+            <Modal>
+                <h1>New Collection Name</h1>
+                <hr css={css`
+                    width: 100%;
+                    margin-top: 0.75rem;
+                `} />
+                <Input placeholder="Input Collection Name" placeholder={oldValue} onChange={(e) => setContent(e.target.value)} />
+                <div css={css`
+                    display: flex;
+                    width: 100%;
+                    justify-content: space-between;
+                `}>
+                    <CancelButton css={css`
+                        align-items: center;
+                    `} onClick={() => onClose()}>
+                        <svg css={css`
+                            height: 1rem;
+                            margin: 0 0.25rem;
+                        `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Cancel
+                    </CancelButton>
+                    <AddButton onClick={() => submit()}>
+                        <svg css={css`
+                            height: 1rem;
+                            margin: 0 0.25rem;
+                            `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Edit Name
+                    </AddButton>
+                </div>
+            </Modal>
+        </ModalContainer>
+    )
+}
+
 export function Modals(props) {
     const {
         data,

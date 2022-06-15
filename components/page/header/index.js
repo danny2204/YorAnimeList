@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { PageTitle } from "../../template/style";
+import { Head, PageTitle } from "../../template/style";
 
 export default function Header(props) {
     const {
@@ -9,7 +9,9 @@ export default function Header(props) {
     } = props;
 
     return(
-        <>
+        <Head css={css`
+            width: 100%;
+        `}>
             <PageTitle>
                 {title}
             </PageTitle>
@@ -17,6 +19,6 @@ export default function Header(props) {
                 margin: 0 3rem;
             `} />
             {attr.additional}
-        </>
+        </Head>
     )
 }
