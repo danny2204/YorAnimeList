@@ -245,32 +245,50 @@ export default function Details() {
         setDetailModalState("flex");
     }
 
-    function addToCollection(name) {
+    function addToCollection(name, collectionList) {
         var collection = name;
-        if (localStorage.getItem(collection) == null){
-            localStorage.setItem(collection, JSON.stringify([data.Media]));
-            addAnime(collection, data.Media);
-            setToastState("success");
-                setInterval(function() {
-                    setToastState("")
-                }, 3000);
-        } else {
-            var test = JSON.parse(localStorage.getItem(collection));
-            if(test.indexOf(data.Media) != -1) {
-                setToastState("error");
-                setInterval(function() {
-                    setToastState("")
-                }, 3000);
-            } else if(test.indexOf(data.Media) == -1) {
-                test.push(data.Media);
-                localStorage.setItem(collection, JSON.stringify(test));
+        if(collection != "") {
+            if (localStorage.getItem(collection) == null){
+                localStorage.setItem(collection, JSON.stringify([data.Media]));
                 addAnime(collection, data.Media);
                 setToastState("success");
-                setInterval(function() {
-                    setToastState("")
-                }, 3000);
-                closeModal()
+                    setInterval(function() {
+                        setToastState("")
+                    }, 3000);
+            } else {
+                var test = JSON.parse(localStorage.getItem(collection));
+                if(test.indexOf(data.Media) != -1) {
+                    setToastState("error");
+                    setInterval(function() {
+                        setToastState("")
+                    }, 3000);
+                } else if(test.indexOf(data.Media) == -1) {
+                    test.push(data.Media);
+                    localStorage.setItem(collection, JSON.stringify(test));
+                    addAnime(collection, data.Media);
+                    setToastState("success");
+                    setInterval(function() {
+                        setToastState("")
+                    }, 3000);
+                    closeModal()
+                }
             }
+        }
+
+        if(collectionList.length != 0) {
+            collectionList.forEach(c => {
+                var test = JSON.parse(localStorage.getItem(c));
+                if(test.findIndex(x => x.id == data.Media.id) == -1) {
+                    test.push(data.Media);
+                    localStorage.setItem(c, JSON.stringify(test));
+                    addAnime(c, data.Media);
+                    setToastState("success");
+                    setInterval(function() {
+                        setToastState("")
+                    }, 3000);
+                    closeModal()
+                }
+            });
         }
     }
 

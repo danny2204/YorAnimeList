@@ -12,7 +12,7 @@ import React, {useEffect} from 'react';
 import Link from 'next/link';
 import Navbar from '../../components/navbar';
 import { css } from '@emotion/react';
-import {AddModals, EditModals} from '../../components/modal';
+import {AddModals, ConfirmationModal, EditModals} from '../../components/modal';
 import Header from '../../components/page/header';
 import SnackBar from '../../components/snackbar';
 
@@ -46,6 +46,8 @@ export default function Collections() {
     const [isPageOpen, setIsPageOpen] = React.useState(true);
     const [toastState, setToastState] = React.useState("");
     const [updateModalState, setUpdateModalState] = React.useState("none");
+    const [confirmationModalState, setConfirmationModalState] = React.useState("none");
+    const [collectionToRemove, setCollectionToRemove] = React.useState("");
 
     function changePage() {
         setIsPageOpen(!isPageOpen);
@@ -67,6 +69,11 @@ export default function Collections() {
         setInterval(() => {
             setToastState("");
         }, 3000);
+    }
+
+    function openConfirmationModal(collection) {
+        setConfirmationModalState("flex");
+        setCollectionToRemove(collection);
     }
 
     function updateCollection(oldCollection, newCollection) {
@@ -100,8 +107,11 @@ export default function Collections() {
         setUpdateModalState("none");
     }
 
+    function closeConfirmationModal() {
+        setConfirmationModalState("none");
+    }
+
     function openUpdateModal(collection) {
-        console.log(collection);
         setUpdateModalState("flex");
         setCurrentCollection(collection);
     }
@@ -170,6 +180,7 @@ export default function Collections() {
                                     {collections?.length == 0 && <h1 css={css`
                                         color: rgb(156 163 175);
                                         margin-top: 3rem;
+                                        margin-left: 5rem;
                                     `}>
                                             No Collections
                                         </h1>
@@ -219,7 +230,7 @@ export default function Collections() {
                                                                 </a> */}
                                                         </CollectionContainer>
                                                     </Link>
-                                                    <DeleteButton className="collection-list-delete-button" onClick={() => removeCollection(keys[index])}>
+                                                    <DeleteButton className="collection-list-delete-button" onClick={() => openConfirmationModal(keys[index])}>
                                                         <p className='default-delete-label'>
                                                             Delete Collection
                                                         </p>
@@ -266,6 +277,7 @@ export default function Collections() {
                     <AddModals onAdd={addNewCollection} onClose={closeModal} display={modalState} />
                     <EditModals display={updateModalState} oldValue={currentCollection} onSubmit={updateCollection} onClose={closeUpdateModal} />
                     <SnackBar type={toastState} failedContent="Failed" successContent="Success" />
+                    <ConfirmationModal onRemoveCollection={removeCollection} display={confirmationModalState} title={"Delete Confirmation"} onClose={closeConfirmationModal} content={collectionToRemove} />
                 </>
             }
             {!isPageOpen &&

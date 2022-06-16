@@ -8,6 +8,7 @@ import Layout from "../../components/template/layout";
 import Navbar from "../../components/navbar";
 import {css} from "@emotion/react";
 import Link from "next/link";
+import { ConfirmationModal } from "../../components/modal";
 
 export default function CollectionDetails() {
     const router = useRouter();
@@ -37,6 +38,20 @@ export default function CollectionDetails() {
     function changePage() {
       setIsPageOpen(!isPageOpen);
     }
+    
+    const [confirmationModalState, setConfirmationModalState] = React.useState("none");
+    const [animeToRemove, setAnimeToRemove] = React.useState("");
+    const [animeIdToRemove, setAnimeIdToRemove] = React.useState(0);
+
+    function openConfirmationModal(anime, animeId) {
+        setConfirmationModalState("flex");
+        setAnimeIdToRemove(animeId);
+        setAnimeToRemove(anime);
+    }
+
+    function closeConfirmationModal() {
+        setConfirmationModalState("none");
+    }
 
     return (
         <>
@@ -52,10 +67,10 @@ export default function CollectionDetails() {
                         `} />
                     </Container>
                     <Container>
-                        {collection.length != 0 &&
-                            <Layout data={collection} isPage={false} action={removeFromCollection} />
+                        {collection != null && collection?.length != 0 &&
+                            <Layout data={collection} isPage={false} action={openConfirmationModal} />
                         }
-                        {collection.length == 0 &&
+                        {(collection == null || collection?.length == 0) &&
                             <div css={css`
                                 width: 90rem;
                                 padding: 0 10rem;
@@ -69,6 +84,7 @@ export default function CollectionDetails() {
                             </div>
                         }
                     </Container>
+                    <ConfirmationModal onRemoveCollection={removeFromCollection} display={confirmationModalState} title={"Delete Confirmation"} onClose={closeConfirmationModal} content={animeToRemove} contentId={animeIdToRemove} />
                 </>
             }
             {!isPageOpen &&  

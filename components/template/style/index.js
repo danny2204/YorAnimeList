@@ -266,7 +266,7 @@ export const AddButton = styled.button`
 
     @media only screen and (max-width: 400px) {
         height: 2rem;
-        width: 7.5rem;
+        width: 5.5rem;
         font-size: 0.75rem;
 
         > svg {
@@ -301,7 +301,7 @@ export const CancelButton = styled.button`
 
     @media only screen and (max-width: 400px) {
         height: 2rem;
-        width: 7.5rem;
+        width: 5.5rem;
 
         svg {
             display: none;

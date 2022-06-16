@@ -92,33 +92,51 @@ export default function Layout(props) {
         setCollection(getAllCollections());
     }
 
-    function addBulkCollection(name) {
+    function addBulkCollection(name, collectionList) {
         var collection = name;
         checkedAnime.forEach(data => {
-            if (localStorage.getItem(collection) == null){
-                localStorage.setItem(collection, JSON.stringify([data]));
-                addAnime(collection, data);
-                setToastState("success");
-                    setInterval(function() {
-                        setToastState("")
-                    }, 3000);
-            } else {
-                var test = JSON.parse(localStorage.getItem(collection));
-                if(test.indexOf(data) != -1) {
-                    setToastState("error");
-                    setInterval(function() {
-                        setToastState("")
-                    }, 3000);
-                } else if(test.indexOf(data) == -1) {
-                    test.push(data);
-                    localStorage.setItem(collection, JSON.stringify(test));
+            if(collection != "") {
+                if (localStorage.getItem(collection) == null){
+                    localStorage.setItem(collection, JSON.stringify([data]));
                     addAnime(collection, data);
                     setToastState("success");
-                    setInterval(function() {
-                        setToastState("")
-                    }, 3000);
-                    closeAddModal()
+                        setInterval(function() {
+                            setToastState("")
+                        }, 3000);
+                } else {
+                    var test = JSON.parse(localStorage.getItem(collection));
+                    if(test.indexOf(data) != -1) {
+                        setToastState("error");
+                        setInterval(function() {
+                            setToastState("")
+                        }, 3000);
+                    } else if(test.indexOf(data) == -1) {
+                        test.push(data);
+                        localStorage.setItem(collection, JSON.stringify(test));
+                        addAnime(collection, data);
+                        setToastState("success");
+                        setInterval(function() {
+                            setToastState("")
+                        }, 3000);
+                        closeAddModal()
+                    }
                 }
+            }
+
+            if(collectionList.length != 0) {
+                collectionList.forEach(c => {
+                    var test = JSON.parse(localStorage.getItem(c));
+                    if(test.findIndex(x => x.id == data.id) == -1) {
+                        test.push(data);
+                        localStorage.setItem(c, JSON.stringify(test));
+                        addAnime(c, data);
+                        setToastState("success");
+                        setInterval(function() {
+                            setToastState("")
+                        }, 3000);
+                        closeAddModal()
+                    }
+                });
             }
         });
     }
@@ -187,7 +205,7 @@ export default function Layout(props) {
                             </Card>
                             <DeleteButton css={css`
                                 width: 15rem;
-                            `} onClick={() => action(d.id)}>
+                            `} onClick={() => action(d.title.romaji, d.id)}>
                                 <p className='default-delete-label'>
                                     Remove From Collection
                                 </p>

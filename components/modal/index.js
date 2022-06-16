@@ -135,8 +135,28 @@ export function Modals(props) {
     } = props;
 
     function add() {
-        addToCollection(content);
+        addToCollection(content, checkedCollection);
         onClose();
+    }
+
+    const [checkedCollection, setCheckedCollection] = React.useState([]);
+
+    function isCollectionExist(collection) {
+        var temp = [...checkedCollection];
+        if(temp.indexOf(collection) != -1) {
+            temp.splice(temp.indexOf(collection), 1);
+        } else {
+            temp.push(collection);
+        }
+        setCheckedCollection(temp);
+    }
+
+    function isChecked(collection) {
+        if(checkedCollection.indexOf(collection) == -1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     const [content, setContent] = React.useState("");
@@ -166,8 +186,16 @@ export function Modals(props) {
                                 cursor: pointer;
                                 background-color: rgb(229 231 235);
                             }
-                        `} key={d} onClick={() => addToCollection(d)}>
-                            {d}
+                        `} key={d}
+                            onClick={() => isCollectionExist(d)}
+                        // onClick={() => addToCollection(d)}
+                        >
+                            <input css={css`
+                                transform: scale(1.5);
+                            `} checked={isChecked(d)} id={d} type="checkbox" />
+                            <label css={css`
+                                padding-left: 1rem;
+                            `} for={d}>{d}</label>
                         </ListItem>
                     })}
 
@@ -216,7 +244,67 @@ export function Modals(props) {
                             `} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Add New Collection
+                        Add To Collection
+                    </AddButton>
+                </div>
+            </Modal>
+        </ModalContainer>
+    )
+}
+
+export function ConfirmationModal(props) {
+    const {
+        data,
+        display,
+        onClose,
+        onRemoveCollection,
+        buttonDisplay,
+        title,
+        content,
+        contentId
+    } = props;
+
+    function add() {
+        if(contentId != null) {
+            onRemoveCollection(contentId);
+        } else {
+            onRemoveCollection(content);
+        }
+        onClose();
+    }
+
+    return(
+        <ModalContainer css={css`
+            display: ${display};
+        `}>
+            <Modal>
+                <h1>{title}</h1>
+                <hr css={css`
+                    width: 100%;
+                    margin-top: 0.75rem;
+                `} />
+
+                <p css={css`
+                    padding: 2rem;
+                    text-align: center;
+                `}>
+                    Are you sure you want to remove {content} ?
+                </p>
+
+                <div css={css`
+                    display: flex;
+                    width: 80%;
+                    justify-content: space-between;
+                `}>
+                    <CancelButton css={css`
+                        align-items: center;
+                    `} onClick={() => onClose()}>
+                        No
+                    </CancelButton>
+                    <AddButton css={css`
+                        display: ${buttonDisplay};
+                    `} onClick={() => add()}>
+                        Yes
                     </AddButton>
                 </div>
             </Modal>
