@@ -197,7 +197,7 @@ export default function Collections() {
                                                                     <img css={css`
                                                                         height: 5.25rem;
                                                                         width: 4rem;
-                                                                    `} src={c[0]?.coverImage.medium} />
+                                                                    `} src={c[0]?.coverImage?.medium} />
                                                                 }
                                                                 <div css={css`
                                                                     margin-left: 1rem;
