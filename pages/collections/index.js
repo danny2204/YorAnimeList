@@ -172,7 +172,7 @@ export default function Collections() {
                                 flex-wrap: wrap;
                                 width: 90rem;
                                 align-items: center;
-                                justify-content: space-between;
+                                justify-content: space-around;
                             `}>
                                 <>
                                     {collections?.length == 0 && <h1 css={css`
