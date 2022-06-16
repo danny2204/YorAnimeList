@@ -212,7 +212,7 @@ export default function Collections() {
                                                                     <p css={css`
                                                                         color: rgb(156 163 175)
                                                                     `}>
-                                                                    Anime : {c.length > 0 && c[0].title.romaji} 
+                                                                    Anime : {c.length > 0 && c[0].title?.romaji} 
                                                                     </p>
                                                                 </div>                                                        
                                                                 {/* <a css={css`
