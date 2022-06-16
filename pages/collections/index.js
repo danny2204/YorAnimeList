@@ -24,9 +24,7 @@ export default function Collections() {
     const [modalState, setModalState] = React.useState("none");
 
     useEffect(() => {
-        if (localStorage.length == 0) {
-            setCollections([...collections, "No Collection Yet"]);
-        } else {
+        if (localStorage.length != 0) {
             var col = [];
             var key = [];
             for (let index = 0; index < Object.entries(localStorage).length; index++) {
