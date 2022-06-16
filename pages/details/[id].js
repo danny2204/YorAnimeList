@@ -140,9 +140,9 @@ export default function Details() {
         year: 'numeric'
     });
 
-    var characterTab = data?.Media.characters.edges.map(function(c) {
+    var characterTab = data?.Media.characters.edges.map(function(c, idx) {
         return (
-            <ListItem>
+            <ListItem key={idx}>
                 <img css={css`
                     width: 3.5rem;
                     height: 5rem;
@@ -157,12 +157,12 @@ export default function Details() {
         )
     });
 
-    var staffTab = data?.Media.reviews.edges.map(function(r) {
+    var staffTab = data?.Media.reviews.edges.map(function(r, idx) {
         return (
             <ListItem css={css`
                 flex-direction: column;
                 align-items: flex-start;
-            `}>
+            `} key={idx}>
                 <p css={css`
                     margin-left: 0.75rem;
                 `}>
@@ -382,8 +382,8 @@ export default function Details() {
                                     display: flex;
                                     flex-wrap: wrap;
                                 `}>
-                                    {data?.Media.genres.map(function(g) {
-                                        return <Label>{g}</Label>
+                                    {data?.Media.genres.map(function(g, idx) {
+                                        return <Label key={idx}>{g}</Label>
                                     })}
                                 </div>
 
@@ -450,7 +450,7 @@ export default function Details() {
                                             flex-wrap: wrap;
                                         `}>
                                             {anime?.collections.map((c) => {
-                                                return <Link href={`/collections/${c}`}>
+                                                return <Link key={c} href={`/collections/${c}`}>
                                                     <Label css={css`
                                                         &:hover {
                                                             background-color: #4338ca;

@@ -195,7 +195,7 @@ export function Modals(props) {
                             `} checked={isChecked(d)} id={d} type="checkbox" />
                             <label css={css`
                                 padding-left: 1rem;
-                            `} for={d}>{d}</label>
+                            `} htmlFor={d}>{d}</label>
                         </ListItem>
                     })}
 
