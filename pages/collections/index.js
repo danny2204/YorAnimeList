@@ -185,7 +185,7 @@ export default function Collections() {
                                             No Collections
                                         </h1>
                                     }
-                                    {collections?.length != 0 && collections?.map(function(c, index) {
+                                    {collections && collections?.length != 0 && collections?.map(function(c, index) {
                                         return (
                                             <>
                                                 <div css={css`
